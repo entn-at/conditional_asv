@@ -6,30 +6,7 @@ import torch
 import os
 from kaldi_io import read_mat_scp
 
-def read_utt2spk(path):
-	with open(path, 'r') as file:
-		pairs = file.readlines()
-
-	utt2spk_dict = {}
-
-	for pair in pairs:
-		utt, spk = pair.split(' ')
-		utt2spk_dict[utt] = spk.replace('\n','')
-
-	return utt2spk_dict
-
-def read_spk2utt(path, min_recs):
-	with open(path, 'r') as file:
-		rows = file.readlines()
-
-	spk2utt_dict = {}
-
-	for row in rows:
-		spk_utts = row.replace('\n','').split(' ')
-		if len(spk_utts[1:])>=min_recs:
-			spk2utt_dict[spk_utts[0]] = spk_utts[1:]
-
-	return spk2utt_dict
+from utils import read_utt2spk, read_spk2utt
 
 if __name__ == '__main__':
 
@@ -99,7 +76,6 @@ if __name__ == '__main__':
 				continue
 
 			data_ = data[utt]
-			#data_ = ( data_ - data_.mean(0) ) / data_.std(0)
 			features = data_.T
 
 			if features.shape[0]>0:
